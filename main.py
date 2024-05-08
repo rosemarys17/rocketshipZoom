@@ -14,7 +14,10 @@ name = "Mr. Das"
 
 # render the text for later
 display_name = my_font.render(name, True, (255, 255, 255))
-
+display_title_screen1 = my_font.render("Use ASDW to move.", True, (255, 255, 255))
+display_title_screen2 = my_font.render("Pollinate each colorful flower without touching the black flowers! Don't let the bear steal your honey!",  True, (255, 255, 255))
+display_title_screen3 = my_font.render("Click anywhere on the screen to begin!", True, (255, 255, 255))
+title_screen = True
 # The loop will carry on until the user exits the game (e.g. clicks the close button).
 run = True
 
@@ -25,7 +28,12 @@ while run:
         if event.type == pygame.QUIT:  # If user clicked close
             run = False
 
-    screen.fill((0, 0, 0))
+    screen.fill((90, 17, 146))
+    if title_screen:
+        screen.blit(display_title_screen1, (150, 200))
+        screen.blit(display_title_screen2, (150, 230))
+        screen.blit(display_title_screen3, (150, 260))
+
     screen.blit(display_name, (0, 0))
     pygame.display.update()
 
