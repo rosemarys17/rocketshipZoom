@@ -4,7 +4,7 @@ from bee import Bee
 # set up pygame modules
 pygame.init()
 pygame.font.init()
-my_font = pygame.font.SysFont('snapitc', 15)
+my_font = pygame.font.SysFont('snapitc', 30)
 pygame.display.set_caption("AP CSP Pygame!")
 
 
@@ -13,7 +13,10 @@ pygame.display.set_caption("AP CSP Pygame!")
 size = (700, 600)
 screen = pygame.display.set_mode(size)
 bee = Bee(70, 70)
+bee.rescale_image("bee.png")
 background = pygame.image.load("background.png")
+image_size = (800, 800)
+background = pygame.transform.scale(background, image_size)
 
 # render the text for later
 display_title_screen1 = my_font.render("Use ASDW to move.", True, (0, 0, 0))
@@ -48,11 +51,11 @@ while run:
 
     if title_screen:
         screen.fill((255, 192, 0))
-        screen.blit(display_title_screen1, (125, 20))
-        screen.blit(display_title_screen2, (40, 100))
-        screen.blit(display_title_screen3, (45, 130))
-        screen.blit(display_title_screen4, (70, 160))
-        screen.blit(display_title_screen5, (45, 230))
+        screen.blit(display_title_screen1, (180, 20))
+        screen.blit(display_title_screen2, (20, 200))
+        screen.blit(display_title_screen3, (30, 240))
+        screen.blit(display_title_screen4, (105, 280))
+        screen.blit(display_title_screen5, (100, 400))
     else:
         screen.blit(background, (0, -130))
         screen.blit(bee.image, bee.rect)
