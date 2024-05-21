@@ -8,7 +8,7 @@ class Bee:
         self.image = pygame.image.load("bee.png")
         self.image_size = self.image.get_size()
         self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])
-        self.delta = .5
+        self.delta = 1
         picture = pygame.image.load("bee.png")
         picture = pygame.transform.scale(picture, (1280, 720))
         self.current_direction = "right"
