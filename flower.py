@@ -7,6 +7,8 @@ class Flower:
         self.flower_type = flower_type
         self.x = x
         self.y = y
+        self.image = pygame.image.load("black_flower.png")
+        self.red = False
         self.set_image()
         self.image_size = self.image.get_size()
         self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])
@@ -14,19 +16,19 @@ class Flower:
     def set_image(self):
         if self.flower_type == 0:
             self.image = pygame.image.load("black_flower.png")
-            red = False
+            self.red = False
         elif self.flower_type == 1:
             self.image = pygame.image.load("blue_flower.png")
-            red = False
+            self.red = False
         elif self.flower_type == 2:
             self.image = pygame.image.load("purple_flower.png")
-            red = False
+            self.red = False
         elif self.flower_type == 3:
             self.image = pygame.image.load("red_flower.png")
-            red = True
+            self.red = True
         elif self.flower_type == 4:
             self.image = pygame.image.load("sunflower.png")
-            red = False
+            self.red = False
 
     def draw_flower(self, screen):
         screen.blit(self.image, self.rect)
