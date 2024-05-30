@@ -20,6 +20,7 @@ honey = score//3
 size = (700, 600)
 screen = pygame.display.set_mode(size)
 bee = Bee(20, 250)
+bear = Bear(random.randint(20, 400), random.randint(20, 400))
 bee.rescale_image("bee.png")
 background = pygame.image.load("background.png")
 image_size = (800, 800)
@@ -39,11 +40,12 @@ display_title_screen3 = my_font.render("touching the red flowers! Don't let",  T
 display_title_screen4 = my_font.render(" the bear steal your honey!", True, (0, 0, 0))
 display_title_screen5 = my_font.render("Click the screen to begin!", True, (0, 0, 0))
 display_honey = my_font2.render("Honey: " + str(honey), True, (0, 0, 0) )
+display_bear = my_font2.render("Oh no! A bear got your honey!", True, (0, 0, 0) )
 title_screen = True
 welcome = True
 start_time = time.time()
 current_time = start_time
-bear = False
+bear_bool = False
 
 # The loop will carry on until the user exits the game (e.g. clicks the close button).
 run = True
@@ -72,41 +74,42 @@ while run:
                 welcome = False
             elif title_screen and not welcome:
                 title_screen = False
-    if current_time/10 == 0:
-        bear = True
 
     for flower in flowers:
         if bee.rect.colliderect(flower.rect):
             print("Colliding with a flower")
         if flower.red == True:
-            score = score - 3
+            bear_bool = True
         else:
             score = score + 1
         honey = score//3
 
-    if welcome and title_screen:
-        screen.fill((255, 192, 0))
-        screen.blit(display_welcome, (100, 230))
-        screen.blit(display_continue, (180, 270))
-    elif title_screen and not welcome:
-        screen.fill((255, 192, 0))
-        screen.blit(display_title_screen1, (180, 20))
-        screen.blit(display_title_screen2, (20, 200))
-        screen.blit(display_title_screen3, (30, 240))
-        screen.blit(display_title_screen4, (105, 280))
-        screen.blit(display_title_screen5, (100, 400))
-        score = 0
-        honey = score//3
-        start_time = time.time()
-        current_time = start_time
-    elif bear:
-        
+    if title_screen:
+        if welcome:
+            screen.fill((255, 192, 0))
+            screen.blit(display_welcome, (100, 230))
+            screen.blit(display_continue, (180, 270))
+        else:
+            screen.fill((255, 192, 0))
+            screen.blit(display_title_screen1, (180, 20))
+            screen.blit(display_title_screen2, (20, 200))
+            screen.blit(display_title_screen3, (30, 240))
+            screen.blit(display_title_screen4, (105, 280))
+            screen.blit(display_title_screen5, (100, 400))
+            score = 0
+            honey = score//3
+            start_time = time.time()
+            current_time = start_time
     else:
         screen.blit(background, (0, -130))
         screen.blit(display_honey, (500, 20))
         screen.blit(bee.image, bee.rect)
         for flower in flowers:
             screen.blit(flower.image, flower.rect)
+    if bear_bool and not title_screen and not welcome:
+        screen.blit(bear.image, bear.rect)
+        score = 0
+        honey = score//3
     pygame.display.update()
 
 # Once we have exited the main program loop we can stop the game engine:
