@@ -26,9 +26,8 @@ background = pygame.image.load("background.png")
 image_size = (800, 800)
 background = pygame.transform.scale(background, image_size)
 flowers = []
-for i in range(10):
-    flower = Flower(random.randint(20, 600), random.randint(250, 560), random.randint(0, 4))
-    flower.rescale_image(flower.image)
+for i in range(5):
+    flower = Flower(random.randint(20, 500), random.randint(250, 500), random.randint(0, 4))
     flowers.append(flower)
 
 # render the text for later
@@ -77,11 +76,12 @@ while run:
 
     for flower in flowers:
         if bee.rect.colliderect(flower.rect):
-            print("Colliding with a flower")
-        if flower.red == True:
-            bear_bool = True
-        else:
-            score = score + 1
+            print("Colliding with a flower", flower.flower_type, flower)
+            flower.change(random.randint(20, 500), random.randint(250, 500))
+            if flower.red == True:
+                bear_bool = True
+            else:
+                score = score + 1
         honey = score//3
 
     if title_screen:

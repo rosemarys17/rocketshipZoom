@@ -33,9 +33,10 @@ class Flower:
     def draw_flower(self, screen):
         screen.blit(self.image, self.rect)
         
-    def change(self):
-        self.x = random.randint(20,600)
-        self.y = random.randint(250,560)
+    def change(self, x, y):
+        self.flower_type = random.randint(0,4)
+        self.x = x
+        self.y = y
         self.set_image()
 
     def rescale_image(self, image):
