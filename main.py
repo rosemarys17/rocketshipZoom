@@ -10,6 +10,7 @@ pygame.init()
 pygame.font.init()
 my_font = pygame.font.SysFont('snapitc', 30)
 my_font2 = pygame.font.SysFont('snapitc', 15)
+my_font3 = pygame.font.SysFont('snapitc', 23)
 pygame.display.set_caption("Pollinator Party!")
 
 
@@ -26,6 +27,11 @@ background = pygame.image.load("background.png")
 image_size = (800, 800)
 background = pygame.transform.scale(background, image_size)
 flowers = []
+
+current_time = time.time()
+time_left = current_time
+start_time = current_time + 10
+
 for i in range(5):
     flower = Flower(random.randint(20, 500), random.randint(250, 500), random.randint(0, 4))
     flowers.append(flower)
@@ -40,11 +46,11 @@ display_title_screen4 = my_font.render(" the bear steal your honey!", True, (0, 
 display_title_screen5 = my_font.render("Click the screen to begin!", True, (0, 0, 0))
 display_honey = my_font2.render("Honey: " + str(honey), True, (0, 0, 0) )
 display_bear = my_font2.render("Oh no! A bear got your honey!", True, (0, 0, 0) )
+display_game_over = my_font3.render("You ran out of time! Total honey collected: " + str(honey), True, (0, 0, 0) )
 title_screen = True
 welcome = True
-start_time = time.time()
-current_time = start_time
 bear_bool = False
+game_over = False
 
 # The loop will carry on until the user exits the game (e.g. clicks the close button).
 run = True
@@ -54,6 +60,7 @@ while run:
 
     keys = pygame.key.get_pressed()
     display_honey = my_font2.render("Honey: " + str(honey), True, (0, 0, 0))
+    display_time = my_font2.render("Time left: " + str(time_left) + "s", True, (255, 255, 255))
 
     if keys[pygame.K_RIGHT]:
         bee.move_direction("right")
@@ -80,10 +87,15 @@ while run:
             flower.change(random.randint(20, 500), random.randint(250, 500))
             if flower.red == True:
                 bear_bool = True
+                time_now = time_left
             else:
                 score = score + 1
         honey = score//3
-
+    if time_left == 0:
+        game_over = True
+        display_game_over = my_font3.render("You ran out of time! Total honey collected: " + str(honey), True, (250, 250, 250))
+    if time_now == time_left + 1:
+        bear_bool = False
     if title_screen:
         if welcome:
             screen.fill((255, 192, 0))
@@ -98,18 +110,28 @@ while run:
             screen.blit(display_title_screen5, (100, 400))
             score = 0
             honey = score//3
-            start_time = time.time()
-            current_time = start_time
+            current_time = time.time()
+            start_time = current_time + 20
+            bear_bool = False
+
     else:
-        screen.blit(background, (0, -130))
-        screen.blit(display_honey, (500, 20))
-        screen.blit(bee.image, bee.rect)
-        for flower in flowers:
-            screen.blit(flower.image, flower.rect)
-    if bear_bool and not title_screen and not welcome:
-        screen.blit(bear.image, bear.rect)
-        score = 0
-        honey = score//3
+        if game_over:
+            screen.blit(display_game_over, (15, 200))
+        else:
+            screen.blit(background, (0, -130))
+            screen.blit(display_honey, (500, 20))
+            screen.blit(display_time, (100, 20))
+            screen.blit(bee.image, bee.rect)
+            current_time = time.time()
+            time_left = round(start_time - current_time, 2)
+
+            for flower in flowers:
+                screen.blit(flower.image, flower.rect)
+        if bear_bool and not title_screen and not welcome:
+            screen.blit(display_bear, (200, 200))
+            screen.blit(bear.image, bear.rect)
+            score = 0
+            honey = score//3
     pygame.display.update()
 
 # Once we have exited the main program loop we can stop the game engine:

@@ -34,10 +34,12 @@ class Flower:
         screen.blit(self.image, self.rect)
         
     def change(self, x, y):
-        self.flower_type = random.randint(0,4)
+        self.flower_type = random.randint(0, 4)
         self.x = x
         self.y = y
         self.set_image()
+        self.rect = pygame.Rect(self.x, self.y, self.image_size[0], self.image_size[1])
+
 
     def rescale_image(self, image):
         self.image_size = self.image.get_size()
