@@ -29,6 +29,7 @@ background = pygame.transform.scale(background, image_size)
 flowers = []
 
 current_time = time.time()
+time_now = current_time
 time_left = current_time
 start_time = current_time + 10
 
@@ -80,7 +81,8 @@ while run:
                 welcome = False
             elif title_screen and not welcome:
                 title_screen = False
-
+    if game_over:
+        bear_bool = False
     for flower in flowers:
         if bee.rect.colliderect(flower.rect):
             print("Colliding with a flower", flower.flower_type, flower)
@@ -96,6 +98,11 @@ while run:
         display_game_over = my_font3.render("You ran out of time! Total honey collected: " + str(honey), True, (250, 250, 250))
     if time_now == time_left + 1:
         bear_bool = False
+
+
+    if game_over:
+        bear_bool = False
+
     if title_screen:
         if welcome:
             screen.fill((255, 192, 0))
@@ -116,6 +123,7 @@ while run:
 
     else:
         if game_over:
+            screen.fill((255, 192, 0))
             screen.blit(display_game_over, (15, 200))
         else:
             screen.blit(background, (0, -130))
