@@ -16,8 +16,7 @@ pygame.display.set_caption("Pollinator Party!")
 
 
 # set up variables for the display
-score = 0
-honey = score//3
+honey = 0
 size = (700, 600)
 screen = pygame.display.set_mode(size)
 bee = Bee(20, 250)
@@ -52,6 +51,10 @@ title_screen = True
 welcome = True
 bear_bool = False
 game_over = False
+pygame.mixer.music.load('bgmusic.mp3')
+collect_sound_bad = pygame.mixer.Sound("negative_sound_effect.wav")
+collect_sound = pygame.mixer.Sound("sound_effect.wav")
+pygame.mixer.music.play(-1)
 
 # The loop will carry on until the user exits the game (e.g. clicks the close button).
 run = True
@@ -84,15 +87,15 @@ while run:
     if game_over:
         bear_bool = False
     for flower in flowers:
-        if bee.rect.colliderect(flower.rect):
-            print("Colliding with a flower", flower.flower_type, flower)
+        if bee.rect.colliderect(flower.rect) and not welcome and not title_screen:
             flower.change(random.randint(20, 500), random.randint(250, 500))
             if flower.red == True:
+                pygame.mixer.Sound.play(collect_sound_bad)
                 bear_bool = True
                 time_now = time_left
             else:
-                score = score + 1
-        honey = score//3
+                pygame.mixer.Sound.play(collect_sound)
+                honey = honey + 1
     if time_left == 0:
         game_over = True
         display_game_over = my_font3.render("You ran out of time! Total honey collected: " + str(honey), True, (250, 250, 250))
@@ -115,8 +118,7 @@ while run:
             screen.blit(display_title_screen3, (30, 240))
             screen.blit(display_title_screen4, (105, 280))
             screen.blit(display_title_screen5, (100, 400))
-            score = 0
-            honey = score//3
+            honey = 0
             current_time = time.time()
             start_time = current_time + 20
             bear_bool = False
@@ -138,8 +140,7 @@ while run:
         if bear_bool and not title_screen and not welcome:
             screen.blit(display_bear, (200, 200))
             screen.blit(bear.image, bear.rect)
-            score = 0
-            honey = score//3
+            honey = 0
     pygame.display.update()
 
 # Once we have exited the main program loop we can stop the game engine:
