@@ -9,7 +9,6 @@ import random
 pygame.init()
 pygame.font.init()
 my_font = pygame.font.SysFont('snapitc', 30)
-my_font2 = pygame.font.SysFont('snapitc', 15)
 my_font3 = pygame.font.SysFont('snapitc', 23)
 pygame.display.set_caption("Pollinator Party!")
 
@@ -20,7 +19,7 @@ honey = 0
 size = (700, 600)
 screen = pygame.display.set_mode(size)
 bee = Bee(20, 250)
-bear = Bear(random.randint(20, 400), random.randint(20, 400))
+bear = Bear(100, 100)
 bee.rescale_image("bee.png")
 background = pygame.image.load("background.png")
 image_size = (800, 800)
@@ -34,6 +33,7 @@ start_time = current_time + 10
 
 for i in range(5):
     flower = Flower(random.randint(20, 500), random.randint(250, 500), random.randint(0, 4))
+    flower.red = flower.red_check(flower.image)
     flowers.append(flower)
 
 # render the text for later
@@ -44,8 +44,8 @@ display_title_screen2 = my_font.render("Pollinate each colorful flower without",
 display_title_screen3 = my_font.render("touching the red flowers! Don't let",  True, (0, 0, 0))
 display_title_screen4 = my_font.render(" the bear steal your honey!", True, (0, 0, 0))
 display_title_screen5 = my_font.render("Click the screen to begin!", True, (0, 0, 0))
-display_honey = my_font2.render("Honey: " + str(honey), True, (0, 0, 0) )
-display_bear = my_font2.render("Oh no! A bear got your honey!", True, (0, 0, 0) )
+display_honey = my_font3.render("Honey: " + str(honey), True, (0, 0, 0) )
+display_bear = my_font3.render("Oh no! A bear got your honey!", True, (0, 0, 0) )
 display_game_over = my_font3.render("You ran out of time! Total honey collected: " + str(honey), True, (0, 0, 0) )
 title_screen = True
 welcome = True
@@ -63,8 +63,8 @@ run = True
 while run:
 
     keys = pygame.key.get_pressed()
-    display_honey = my_font2.render("Honey: " + str(honey), True, (0, 0, 0))
-    display_time = my_font2.render("Time left: " + str(time_left) + "s", True, (255, 255, 255))
+    display_honey = my_font3.render("Honey: " + str(honey), True, (0, 0, 0))
+    display_time = my_font3.render("Time left: " + str(time_left) + "s", True, (255, 255, 255))
 
     if keys[pygame.K_RIGHT]:
         bee.move_direction("right")
@@ -86,27 +86,29 @@ while run:
                 title_screen = False
     if game_over:
         bear_bool = False
-    for flower in flowers:
-        if bee.rect.colliderect(flower.rect) and not welcome and not title_screen:
-            flower.change(random.randint(20, 500), random.randint(250, 500))
-            if flower.red == True:
-                pygame.mixer.Sound.play(collect_sound_bad)
-                bear_bool = True
-                time_now = time_left
-            else:
-                pygame.mixer.Sound.play(collect_sound)
-                honey = honey + 1
-    if time_left == 0:
+    if not welcome and not title_screen and int(time_left) < 19.5:
+        for flower in flowers:
+            if bee.rect.colliderect(flower.rect):
+                flower.red_check(flower.image)
+                if flower.red:
+                    pygame.mixer.Sound.play(collect_sound_bad)
+                    bear_bool = True
+                    time_now = time_left
+                else:
+                    pygame.mixer.Sound.play(collect_sound)
+                    honey = honey + 1
+                flower.change(random.randint(20, 500), random.randint(250, 500))
+    if time_left <= 0:
         game_over = True
         display_game_over = my_font3.render("You ran out of time! Total honey collected: " + str(honey), True, (250, 250, 250))
     if time_now == time_left + 1:
         bear_bool = False
 
-
-    if game_over:
+    if game_over or (welcome and title_screen):
         bear_bool = False
 
     if title_screen:
+        bear_bool = False
         if welcome:
             screen.fill((255, 192, 0))
             screen.blit(display_welcome, (100, 230))
@@ -138,7 +140,7 @@ while run:
             for flower in flowers:
                 screen.blit(flower.image, flower.rect)
         if bear_bool and not title_screen and not welcome:
-            screen.blit(display_bear, (200, 200))
+            screen.blit(display_bear, (300, 200))
             screen.blit(bear.image, bear.rect)
             honey = 0
     pygame.display.update()
