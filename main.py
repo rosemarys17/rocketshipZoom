@@ -39,7 +39,7 @@ for i in range(5):
 # render the text for later
 display_welcome = my_font.render("Welcome to pollinator party!", True, (0, 0, 0))
 display_continue = my_font.render("Click to continue!", True, (0, 0, 0))
-display_title_screen1 = my_font.render("Use ASDW to move.", True, (0, 0, 0))
+display_title_screen1 = my_font.render("Use the arrow keys to move.", True, (0, 0, 0))
 display_title_screen2 = my_font.render("Pollinate each colorful flower without",  True, (0, 0, 0))
 display_title_screen3 = my_font.render("touching the red flowers! Don't let",  True, (0, 0, 0))
 display_title_screen4 = my_font.render(" the bear steal your honey!", True, (0, 0, 0))
