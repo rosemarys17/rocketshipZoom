@@ -115,7 +115,7 @@ while run:
             screen.blit(display_continue, (180, 270))
         else:
             screen.fill((255, 192, 0))
-            screen.blit(display_title_screen1, (180, 20))
+            screen.blit(display_title_screen1, (100, 20))
             screen.blit(display_title_screen2, (20, 200))
             screen.blit(display_title_screen3, (30, 240))
             screen.blit(display_title_screen4, (105, 280))
